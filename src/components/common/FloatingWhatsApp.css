@@ -1,0 +1,104 @@
+/* ============================ */
+/* FLOATING WHATSAPP PILL */
+/* ============================ */
+.floating-whatsapp-pill {
+  position: fixed;
+  right: 18px;
+  bottom: 22px;
+  height: 52px;
+  padding: 0 16px 0 12px;
+  background: #25d366;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Hover / Tap effect */
+.floating-whatsapp-pill:hover {
+  transform: scale(1.05);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* Icon */
+.whatsapp-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+/* Text */
+.whatsapp-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+/* ============================ */
+/* TABLET RESPONSIVE */
+/* ============================ */
+@media (max-width: 1024px) {
+  .floating-whatsapp-pill {
+    height: 50px;
+    padding: 0 15px 0 12px;
+    right: 16px;
+    bottom: 20px;
+  }
+
+  .whatsapp-icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  .whatsapp-text {
+    font-size: 14.5px;
+  }
+}
+
+/* ============================ */
+/* MOBILE RESPONSIVE */
+/* ============================ */
+@media (max-width: 768px) {
+  .floating-whatsapp-pill {
+    height: 48px;
+    padding: 0 14px 0 11px;
+    right: 14px;
+    bottom: 18px;
+  }
+
+  .whatsapp-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .whatsapp-text {
+    font-size: 14px;
+  }
+}
+
+/* ============================ */
+/* SMALL MOBILE */
+/* ============================ */
+@media (max-width: 480px) {
+  .floating-whatsapp-pill {
+    height: 46px;
+    padding: 0 13px 0 10px;
+    right: 12px;
+    bottom: 16px;
+  }
+
+  .whatsapp-icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  .whatsapp-text {
+    font-size: 13.5px;
+  }
+}

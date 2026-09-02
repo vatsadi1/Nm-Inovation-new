@@ -1,0 +1,15 @@
+{
+  "short_name": "nminovation",
+  "name": "nminovation Digital Systems",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#080C14",
+  "theme_color": "#080C14",
+  "display": "standalone"
+}
