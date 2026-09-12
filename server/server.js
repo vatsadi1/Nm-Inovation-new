@@ -118,14 +118,14 @@ if (process.env.NODE_ENV === 'development') {
 // API ROUTES - DEBUG
 // ====================================================
 
-console.log('inquiryRoutes:', typeof inquiryRoutes);
-console.log('auditRoutes:', typeof auditRoutes);
-console.log('systemPlanRoutes:', typeof systemPlanRoutes);
-console.log('insightRoutes:', typeof insightRoutes);
-console.log('caseStudyRoutes:', typeof caseStudyRoutes);
-console.log('healthRoutes:', typeof healthRoutes);
+// console.log('inquiryRoutes:', typeof inquiryRoutes);
+// console.log('auditRoutes:', typeof auditRoutes);
+// console.log('systemPlanRoutes:', typeof systemPlanRoutes);
+// console.log('insightRoutes:', typeof insightRoutes);
+// console.log('caseStudyRoutes:', typeof caseStudyRoutes);
+// console.log('healthRoutes:', typeof healthRoutes);
 
-app.use('/api/v1/inquiries', inquiryRoutes);
+// app.use('/api/v1/inquiries', inquiryRoutes);
 
 
 // console.log('========== ROUTE DEBUG ==========');
@@ -154,6 +154,64 @@ app.use('/api/v1/inquiries', inquiryRoutes);
 // ====================================================
 // API ROOT
 // ====================================================
+
+// ====================================================
+// API ROUTES - DEBUG
+// ====================================================
+
+console.log('========== API ROUTE DEBUG ==========');
+
+console.log('inquiryRoutes:', typeof inquiryRoutes);
+if (typeof inquiryRoutes !== 'function') {
+  throw new TypeError(
+    `inquiryRoutes is ${typeof inquiryRoutes}, expected function`
+  );
+}
+
+console.log('auditRoutes:', typeof auditRoutes);
+if (typeof auditRoutes !== 'function') {
+  throw new TypeError(
+    `auditRoutes is ${typeof auditRoutes}, expected function`
+  );
+}
+
+console.log('systemPlanRoutes:', typeof systemPlanRoutes);
+if (typeof systemPlanRoutes !== 'function') {
+  throw new TypeError(
+    `systemPlanRoutes is ${typeof systemPlanRoutes}, expected function`
+  );
+}
+
+console.log('insightRoutes:', typeof insightRoutes);
+if (typeof insightRoutes !== 'function') {
+  throw new TypeError(
+    `insightRoutes is ${typeof insightRoutes}, expected function`
+  );
+}
+
+console.log('caseStudyRoutes:', typeof caseStudyRoutes);
+if (typeof caseStudyRoutes !== 'function') {
+  throw new TypeError(
+    `caseStudyRoutes is ${typeof caseStudyRoutes}, expected function`
+  );
+}
+
+console.log('healthRoutes:', typeof healthRoutes);
+if (typeof healthRoutes !== 'function') {
+  throw new TypeError(
+    `healthRoutes is ${typeof healthRoutes}, expected function`
+  );
+}
+
+console.log('====================================');
+
+app.use('/api/v1/inquiries', inquiryRoutes);
+app.use('/api/v1/audits', auditRoutes);
+app.use('/api/v1/system-plans', systemPlanRoutes);
+app.use('/api/v1/insights', insightRoutes);
+app.use('/api/v1/case-studies', caseStudyRoutes);
+app.use('/api/v1', healthRoutes);
+
 
 app.get('/api/v1', (req, res) => {
   res.status(200).json({
