@@ -56,9 +56,7 @@ app.use(
         return callback(null, true);
       }
 
-      return callback(
-        new Error('Not allowed by CORS')
-      );
+      return callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
@@ -142,11 +140,18 @@ app.get('/api/v1', (req, res) => {
 // API 404
 // ====================================================
 
-app.use('/api/*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    error: `API Route ${req.originalUrl} not found.`
-  });
+// Do NOT use app.use('/api/*', ...) here.
+// Handle unmatched API requests with a normal middleware.
+
+app.use((req, res, next) => {
+  if (req.originalUrl.startsWith('/api/')) {
+    return res.status(404).json({
+      success: false,
+      error: `API Route ${req.originalUrl} not found.`
+    });
+  }
+
+  next();
 });
 
 
