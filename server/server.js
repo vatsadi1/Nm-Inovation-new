@@ -113,6 +113,16 @@ if (process.env.NODE_ENV === 'development') {
 // API ROUTES
 // ====================================================
 
+console.log('========== ROUTE DEBUG ==========');
+console.log('inquiryRoutes:', typeof inquiryRoutes);
+console.log('auditRoutes:', typeof auditRoutes);
+console.log('systemPlanRoutes:', typeof systemPlanRoutes);
+console.log('insightRoutes:', typeof insightRoutes);
+console.log('caseStudyRoutes:', typeof caseStudyRoutes);
+console.log('healthRoutes:', typeof healthRoutes);
+console.log('=================================');
+
+
 app.use('/api/v1/inquiries', inquiryRoutes);
 
 app.use('/api/v1/audits', auditRoutes);
