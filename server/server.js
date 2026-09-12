@@ -89,6 +89,21 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 
+
+
+//
+
+console.log('=== MIDDLEWARE TYPES ===');
+console.log('apiLimiter:', typeof apiLimiter);
+console.log('inquiryRoutes:', typeof inquiryRoutes);
+console.log('auditRoutes:', typeof auditRoutes);
+console.log('systemPlanRoutes:', typeof systemPlanRoutes);
+console.log('insightRoutes:', typeof insightRoutes);
+console.log('caseStudyRoutes:', typeof caseStudyRoutes);
+console.log('healthRoutes:', typeof healthRoutes);
+console.log('requestLogger:', typeof requestLogger);
+console.log('========================');
+
 // ====================================================
 // RATE LIMITING
 // ====================================================
