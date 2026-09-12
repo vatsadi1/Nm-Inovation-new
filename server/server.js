@@ -7,7 +7,6 @@ import morgan from 'morgan';
 import { errorHandler } from './middleware/errorHandler.js';
 import { requestLogger } from './middleware/logger.js';
 
-// Route Imports
 import inquiryRoutes from './routes/inquiryRoutes.js';
 import auditRoutes from './routes/auditRoutes.js';
 import systemPlanRoutes from './routes/systemPlanRoutes.js';
@@ -45,8 +44,6 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests without Origin
-      // (curl, Postman, server-to-server, etc.)
       if (!origin) {
         return callback(null, true);
       }
@@ -89,22 +86,11 @@ if (process.env.NODE_ENV === 'development') {
 // API ROUTES
 // ====================================================
 
-// Inquiry API
 app.use('/api/v1/inquiries', inquiryRoutes);
-
-// Audit API
 app.use('/api/v1/audits', auditRoutes);
-
-// System Plan API
 app.use('/api/v1/system-plans', systemPlanRoutes);
-
-// Insights API
 app.use('/api/v1/insights', insightRoutes);
-
-// Case Studies API
 app.use('/api/v1/case-studies', caseStudyRoutes);
-
-// Health / Telemetry API
 app.use('/api/v1', healthRoutes);
 
 // ====================================================
@@ -149,9 +135,5 @@ app.use((req, res, next) => {
 // ====================================================
 
 app.use(errorHandler);
-
-// ====================================================
-// EXPORT
-// ====================================================
 
 export default app;

@@ -1,9 +1,17 @@
-import { Router } from 'express';
+import express from 'express';
+
 import { insightController } from '../controllers/insightController.js';
 
-const router = Router();
+const router = express.Router();
 
-router.get('/', insightController.getInsights);
-router.get('/:slug', insightController.getInsightBySlug);
+router.get(
+  '/',
+  insightController.getInsights
+);
+
+router.get(
+  '/:slug',
+  insightController.getInsightBySlug
+);
 
 export default router;
