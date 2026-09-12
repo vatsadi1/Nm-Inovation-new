@@ -4,14 +4,21 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
-import { errorHandler } from './middleware/errorHandler.js';
- 
-import inquiryRoutes from './routes/inquiryRoutes.js';
-import auditRoutes from './routes/auditRoutes.js';
-import systemPlanRoutes from './routes/systemPlanRoutes.js';
-import insightRoutes from './routes/insightRoutes.js';
-import caseStudyRoutes from './routes/caseStudyRoutes.js';
-import healthRoutes from './routes/healthRoutes.js';
+import * as inquiryRoutesModule from './routes/inquiryRoutes.js';
+import * as auditRoutesModule from './routes/auditRoutes.js';
+import * as systemPlanRoutesModule from './routes/systemPlanRoutes.js';
+import * as insightRoutesModule from './routes/insightRoutes.js';
+import * as caseStudyRoutesModule from './routes/caseStudyRoutes.js';
+import * as healthRoutesModule from './routes/healthRoutes.js';
+import * as errorHandlerModule from './middleware/errorHandler.js';
+
+const inquiryRoutes = inquiryRoutesModule.default;
+const auditRoutes = auditRoutesModule.default;
+const systemPlanRoutes = systemPlanRoutesModule.default;
+const insightRoutes = insightRoutesModule.default;
+const caseStudyRoutes = caseStudyRoutesModule.default;
+const healthRoutes = healthRoutesModule.default;
+const errorHandler = errorHandlerModule.default ?? errorHandlerModule.errorHandler;
 
 dotenv.config();
 
