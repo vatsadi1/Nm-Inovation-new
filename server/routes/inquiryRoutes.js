@@ -5,7 +5,16 @@ import { submissionLimiter } from '../middleware/rateLimiter.js';
 
 const router = Router();
 
-router.post('/', submissionLimiter, validateInquiryPayload, inquiryController.createInquiry);
-router.get('/', inquiryController.getInquiries);
+router.post(
+  '/',
+  submissionLimiter,
+  validateInquiryPayload,
+  inquiryController.createInquiry
+);
+
+router.get(
+  '/',
+  inquiryController.getInquiries
+);
 
 export default router;

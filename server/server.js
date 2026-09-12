@@ -9,7 +9,15 @@ import { requestLogger } from './middleware/logger.js';
 // import { apiLimiter } from './middleware/rateLimiter.js';
 
 // Route Imports
-import inquiryRoutes from './routes/inquiryRoutes.js';
+import * as inquiryRoutesModule from './routes/inquiryRoutes.js';
+
+console.log('========== INQUIRY MODULE ==========');
+console.log('Module:', inquiryRoutesModule);
+console.log('Default:', inquiryRoutesModule.default);
+console.log('Default type:', typeof inquiryRoutesModule.default);
+console.log('====================================');
+
+const inquiryRoutes = inquiryRoutesModule.default;
 import auditRoutes from './routes/auditRoutes.js';
 import systemPlanRoutes from './routes/systemPlanRoutes.js';
 import insightRoutes from './routes/insightRoutes.js';
@@ -118,37 +126,37 @@ if (process.env.NODE_ENV === 'development') {
 // API ROUTES - DEBUG
 // ====================================================
 
-// console.log('inquiryRoutes:', typeof inquiryRoutes);
-// console.log('auditRoutes:', typeof auditRoutes);
-// console.log('systemPlanRoutes:', typeof systemPlanRoutes);
-// console.log('insightRoutes:', typeof insightRoutes);
-// console.log('caseStudyRoutes:', typeof caseStudyRoutes);
-// console.log('healthRoutes:', typeof healthRoutes);
+console.log('inquiryRoutes:', typeof inquiryRoutes);
+console.log('auditRoutes:', typeof auditRoutes);
+console.log('systemPlanRoutes:', typeof systemPlanRoutes);
+console.log('insightRoutes:', typeof insightRoutes);
+console.log('caseStudyRoutes:', typeof caseStudyRoutes);
+console.log('healthRoutes:', typeof healthRoutes);
 
-// app.use('/api/v1/inquiries', inquiryRoutes);
-
-
-// console.log('========== ROUTE DEBUG ==========');
-// console.log('inquiryRoutes:', typeof inquiryRoutes);
-// console.log('auditRoutes:', typeof auditRoutes);
-// console.log('systemPlanRoutes:', typeof systemPlanRoutes);
-// console.log('insightRoutes:', typeof insightRoutes);
-// console.log('caseStudyRoutes:', typeof caseStudyRoutes);
-// console.log('healthRoutes:', typeof healthRoutes);
-// console.log('=================================');
+app.use('/api/v1/inquiries', inquiryRoutes);
 
 
-// app.use('/api/v1/inquiries', inquiryRoutes);
+console.log('========== ROUTE DEBUG ==========');
+console.log('inquiryRoutes:', typeof inquiryRoutes);
+console.log('auditRoutes:', typeof auditRoutes);
+console.log('systemPlanRoutes:', typeof systemPlanRoutes);
+console.log('insightRoutes:', typeof insightRoutes);
+console.log('caseStudyRoutes:', typeof caseStudyRoutes);
+console.log('healthRoutes:', typeof healthRoutes);
+console.log('=================================');
 
-// app.use('/api/v1/audits', auditRoutes);
 
-// app.use('/api/v1/system-plans', systemPlanRoutes);
+app.use('/api/v1/inquiries', inquiryRoutes);
 
-// app.use('/api/v1/insights', insightRoutes);
+app.use('/api/v1/audits', auditRoutes);
 
-// app.use('/api/v1/case-studies', caseStudyRoutes);
+app.use('/api/v1/system-plans', systemPlanRoutes);
 
-// app.use('/api/v1', healthRoutes);
+app.use('/api/v1/insights', insightRoutes);
+
+app.use('/api/v1/case-studies', caseStudyRoutes);
+
+app.use('/api/v1', healthRoutes);
 
 
 // ====================================================
