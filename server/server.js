@@ -167,49 +167,37 @@ app.use('/api/v1', healthRoutes);
 // API ROUTES - DEBUG
 // ====================================================
 
+// ====================================================
+// API ROUTES - DEBUG
+// ====================================================
+
 console.log('========== API ROUTE DEBUG ==========');
 
-console.log('inquiryRoutes:', typeof inquiryRoutes);
-if (typeof inquiryRoutes !== 'function') {
-  throw new TypeError(
-    `inquiryRoutes is ${typeof inquiryRoutes}, expected function`
-  );
-}
+console.log('1. inquiryRoutes:', typeof inquiryRoutes);
+app.use('/api/v1/inquiries', inquiryRoutes);
+console.log('1. inquiryRoutes mounted OK');
 
-console.log('auditRoutes:', typeof auditRoutes);
-if (typeof auditRoutes !== 'function') {
-  throw new TypeError(
-    `auditRoutes is ${typeof auditRoutes}, expected function`
-  );
-}
+console.log('2. auditRoutes:', typeof auditRoutes);
+app.use('/api/v1/audits', auditRoutes);
+console.log('2. auditRoutes mounted OK');
 
-console.log('systemPlanRoutes:', typeof systemPlanRoutes);
-if (typeof systemPlanRoutes !== 'function') {
-  throw new TypeError(
-    `systemPlanRoutes is ${typeof systemPlanRoutes}, expected function`
-  );
-}
+console.log('3. systemPlanRoutes:', typeof systemPlanRoutes);
+app.use('/api/v1/system-plans', systemPlanRoutes);
+console.log('3. systemPlanRoutes mounted OK');
 
-console.log('insightRoutes:', typeof insightRoutes);
-if (typeof insightRoutes !== 'function') {
-  throw new TypeError(
-    `insightRoutes is ${typeof insightRoutes}, expected function`
-  );
-}
+console.log('4. insightRoutes:', typeof insightRoutes);
+app.use('/api/v1/insights', insightRoutes);
+console.log('4. insightRoutes mounted OK');
 
-console.log('caseStudyRoutes:', typeof caseStudyRoutes);
-if (typeof caseStudyRoutes !== 'function') {
-  throw new TypeError(
-    `caseStudyRoutes is ${typeof caseStudyRoutes}, expected function`
-  );
-}
+console.log('5. caseStudyRoutes:', typeof caseStudyRoutes);
+app.use('/api/v1/case-studies', caseStudyRoutes);
+console.log('5. caseStudyRoutes mounted OK');
 
-console.log('healthRoutes:', typeof healthRoutes);
-if (typeof healthRoutes !== 'function') {
-  throw new TypeError(
-    `healthRoutes is ${typeof healthRoutes}, expected function`
-  );
-}
+console.log('6. healthRoutes:', typeof healthRoutes);
+app.use('/api/v1', healthRoutes);
+console.log('6. healthRoutes mounted OK');
+
+console.log('====================================');
 
 console.log('====================================');
 
