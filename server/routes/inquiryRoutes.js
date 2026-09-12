@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import express from 'express';
 
 import { inquiryController } from '../controllers/inquiryController.js';
 import { validateInquiryPayload } from '../middleware/validator.js';
 import { submissionLimiter } from '../middleware/rateLimiter.js';
 
-const router = Router();
+const router = express.Router();
 
 router.post(
   '/',

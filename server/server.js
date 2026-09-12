@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import { errorHandler } from './middleware/errorHandler.js';
-import requestLogger from './middleware/logger.js';
+ 
 import inquiryRoutes from './routes/inquiryRoutes.js';
 import auditRoutes from './routes/auditRoutes.js';
 import systemPlanRoutes from './routes/systemPlanRoutes.js';
@@ -77,8 +77,6 @@ app.use(
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
-} else {
-  app.use(requestLogger);
 }
 
 // ====================================================
