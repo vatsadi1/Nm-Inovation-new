@@ -1,42 +1,57 @@
 import mongoose from 'mongoose';
 
-let isConnected = false;
+let connectionPromise = null;
 
 export async function connectDB() {
-  const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/nminovation_digital_systems';
+  const uri = process.env.MONGODB_URI;
 
-  try {
-    const conn = await mongoose.connect(uri, {
+  if (!uri) {
+    throw new Error(
+      'MONGODB_URI environment variable is not configured.'
+    );
+  }
+
+  // Already connected
+  if (mongoose.connection.readyState === 1) {
+    return mongoose.connection;
+  }
+
+  // Connection already being established
+  if (connectionPromise) {
+    return connectionPromise;
+  }
+
+  connectionPromise = mongoose
+    .connect(uri, {
       serverSelectionTimeoutMS: 5000,
       connectTimeoutMS: 10000
+    })
+    .then((conn) => {
+      console.log(
+        `[MongoDB] Connected: ${conn.connection.host}/${conn.connection.name}`
+      );
+
+      return conn;
+    })
+    .catch((error) => {
+      console.error(
+        `[MongoDB] Connection failed: ${error.message}`
+      );
+
+      connectionPromise = null;
+
+      throw error;
     });
 
-    isConnected = true;
-    console.log(`[MongoDB] Connected successfully to host: ${conn.connection.host}, database: ${conn.connection.name}`);
-
-    mongoose.connection.on('error', (err) => {
-      console.error(`[MongoDB] Connection error event: ${err.message}`);
-      isConnected = false;
-    });
-
-    mongoose.connection.on('disconnected', () => {
-      console.warn('[MongoDB] Connection disconnected.');
-      isConnected = false;
-    });
-
-    return conn;
-  } catch (error) {
-    console.warn(`[MongoDB Notice] Direct MongoDB server connection attempt at ${uri} was not reachable: ${error.message}`);
-    console.warn('[MongoDB Notice] Server is running with memory fallback / mock storage for endpoints.');
-    isConnected = false;
-    return null;
-  }
+  return connectionPromise;
 }
 
 export function getDBStatus() {
+  const readyState = mongoose.connection.readyState;
+
   return {
-    connected: isConnected,
-    readyState: mongoose.connection.readyState,
-    status: isConnected ? 'ONLINE' : 'FALLBACK_LOCAL_BUFFER'
+    connected: readyState === 1,
+    readyState,
+    status: readyState === 1 ? 'ONLINE' : 'OFFLINE'
   };
 }

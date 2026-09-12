@@ -4,7 +4,6 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
-import { connectDB } from './config/db.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { requestLogger } from './middleware/logger.js';
 import { apiLimiter } from './middleware/rateLimiter.js';
@@ -20,32 +19,70 @@ import healthRoutes from './routes/healthRoutes.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
 
-// Initialize Database connection
-connectDB();
 
-// Security & Parsing Middleware
-app.use(helmet({
-  contentSecurityPolicy: false,
-  crossOriginEmbedderPolicy: false
-}));
+// ====================================================
+// SECURITY
+// ====================================================
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps, curl, server-to-server) or localhost
-    if (!origin || origin.includes('localhost') || origin.includes('127.0.0.1')) {
-      return callback(null, true);
-    }
-    return callback(null, true);
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-}));
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false
+  })
+);
+
+
+// ====================================================
+// CORS
+// ====================================================
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://nminovation.com',
+  process.env.CORS_ORIGIN
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Requests without Origin: curl, Postman, server-to-server, etc.
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(
+        new Error('Not allowed by CORS')
+      );
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  })
+);
+
+
+// ====================================================
+// BODY PARSING
+// ====================================================
 
 app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: '1mb'
+  })
+);
+
+
+// ====================================================
+// LOGGING
+// ====================================================
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -53,18 +90,35 @@ if (process.env.NODE_ENV === 'development') {
   app.use(requestLogger);
 }
 
-// Apply general rate limiter
+
+// ====================================================
+// RATE LIMITING
+// ====================================================
+
 app.use('/api/', apiLimiter);
 
-// API v1 Mounts
+
+// ====================================================
+// API ROUTES
+// ====================================================
+
 app.use('/api/v1/inquiries', inquiryRoutes);
+
 app.use('/api/v1/audits', auditRoutes);
+
 app.use('/api/v1/system-plans', systemPlanRoutes);
+
 app.use('/api/v1/insights', insightRoutes);
+
 app.use('/api/v1/case-studies', caseStudyRoutes);
+
 app.use('/api/v1', healthRoutes);
 
-// Root API Welcome endpoint
+
+// ====================================================
+// API ROOT
+// ====================================================
+
 app.get('/api/v1', (req, res) => {
   res.status(200).json({
     name: 'nminovation Digital Systems API Platform',
@@ -83,32 +137,26 @@ app.get('/api/v1', (req, res) => {
   });
 });
 
-// 404 handler for API routes
+
+// ====================================================
+// API 404
+// ====================================================
+
 app.use('/api/*', (req, res) => {
   res.status(404).json({
     success: false,
-    error: `API Route ${req.originalUrl} not found innm inovation System Registry.`
+    error: `API Route ${req.originalUrl} not found.`
   });
 });
 
-// Centralized error handler
+
+// ====================================================
+// ERROR HANDLER
+// ====================================================
+
 app.use(errorHandler);
 
-// Start HTTP listener
-const server = app.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(`[nminovation Backend Server] Running on http://localhost:${PORT}`);
-  console.log(`[Environment] ${process.env.NODE_ENV || 'development'}`);
-  console.log(`[API Base] http://localhost:${PORT}/api/v1`);
-  console.log(`====================================================`);
-});
 
-// Graceful shutdown handling
-process.on('SIGTERM', () => {
-  console.log('[Server] SIGTERM received. Shutting down gracefully...');
-  server.close(() => {
-    console.log('[Server] Process terminated.');
-  });
-});
-
+// Export Express application
+// Netlify imports this file.
 export default app;

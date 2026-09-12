@@ -107,7 +107,7 @@ export function IndustryDetailPage({ customSlug }) {
             <div className="rounded-2xl bg-[#0E1422] border border-blue-500/30 p-6 sm:p-8 shadow-xl">
               <div className="flex items-center gap-2 text-blue-400 font-display text-xs font-bold uppercase tracking-wider mb-4">
                 <Zap className="w-4 h-4" />
-                Thenm inovation System Solution
+                The Digital Innovation System Solution
               </div>
               <p className="font-body text-sm sm:text-base text-slate-300 leading-relaxed">
                 {industry.solution}
