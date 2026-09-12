@@ -1,6 +1,6 @@
-import rateLimit from 'express-rate-limit';
+import { rateLimit } from 'express-rate-limit';
 
-// General API rate limiter: 100 requests per 15 minutes
+// General API rate limiter
 export const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 150,
@@ -12,7 +12,7 @@ export const apiLimiter = rateLimit({
   }
 });
 
-// Strict rate limiter for form submissions: 15 submissions per 15 minutes
+// Strict rate limiter for form submissions
 export const submissionLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 20,
