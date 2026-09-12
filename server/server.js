@@ -6,18 +6,9 @@ import morgan from 'morgan';
 
 import { errorHandler } from './middleware/errorHandler.js';
 import { requestLogger } from './middleware/logger.js';
-// import { apiLimiter } from './middleware/rateLimiter.js';
 
 // Route Imports
-import * as inquiryRoutesModule from './routes/inquiryRoutes.js';
-
-console.log('========== INQUIRY MODULE ==========');
-console.log('Module:', inquiryRoutesModule);
-console.log('Default:', inquiryRoutesModule.default);
-console.log('Default type:', typeof inquiryRoutesModule.default);
-console.log('====================================');
-
-const inquiryRoutes = inquiryRoutesModule.default;
+import inquiryRoutes from './routes/inquiryRoutes.js';
 import auditRoutes from './routes/auditRoutes.js';
 import systemPlanRoutes from './routes/systemPlanRoutes.js';
 import insightRoutes from './routes/insightRoutes.js';
@@ -27,7 +18,6 @@ import healthRoutes from './routes/healthRoutes.js';
 dotenv.config();
 
 const app = express();
-
 
 // ====================================================
 // SECURITY
@@ -40,7 +30,6 @@ app.use(
   })
 );
 
-
 // ====================================================
 // CORS
 // ====================================================
@@ -49,13 +38,15 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5173',
   'https://nminovation.com',
+  'https://www.nminovation.com',
   process.env.CORS_ORIGIN
 ].filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Requests without Origin: curl, Postman, server-to-server, etc.
+      // Allow requests without Origin
+      // (curl, Postman, server-to-server, etc.)
       if (!origin) {
         return callback(null, true);
       }
@@ -71,7 +62,6 @@ app.use(
   })
 );
 
-
 // ====================================================
 // BODY PARSING
 // ====================================================
@@ -85,7 +75,6 @@ app.use(
   })
 );
 
-
 // ====================================================
 // LOGGING
 // ====================================================
@@ -93,121 +82,34 @@ app.use(
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 } else {
-  console.log('========== LOGGER DEBUG ==========');
-  console.log('requestLogger:', requestLogger);
-  console.log('requestLogger type:', typeof requestLogger);
-  console.log('==================================');
-
-  if (typeof requestLogger === 'function') {
-    app.use(requestLogger);
-  } else {
-    console.error('requestLogger is NOT a function');
-  }
+  app.use(requestLogger);
 }
-
-
-
-
-
-// ====================================================
-// RATE LIMITING
-// ====================================================
-
-// Temporarily disabled for Netlify deployment debugging.
-// app.use('/api/', apiLimiter);
-
 
 // ====================================================
 // API ROUTES
 // ====================================================
 
-
-// ====================================================
-// API ROUTES - DEBUG
-// ====================================================
-
-console.log('inquiryRoutes:', typeof inquiryRoutes);
-console.log('auditRoutes:', typeof auditRoutes);
-console.log('systemPlanRoutes:', typeof systemPlanRoutes);
-console.log('insightRoutes:', typeof insightRoutes);
-console.log('caseStudyRoutes:', typeof caseStudyRoutes);
-console.log('healthRoutes:', typeof healthRoutes);
-
+// Inquiry API
 app.use('/api/v1/inquiries', inquiryRoutes);
 
-
-console.log('========== ROUTE DEBUG ==========');
-console.log('inquiryRoutes:', typeof inquiryRoutes);
-console.log('auditRoutes:', typeof auditRoutes);
-console.log('systemPlanRoutes:', typeof systemPlanRoutes);
-console.log('insightRoutes:', typeof insightRoutes);
-console.log('caseStudyRoutes:', typeof caseStudyRoutes);
-console.log('healthRoutes:', typeof healthRoutes);
-console.log('=================================');
-
-
-app.use('/api/v1/inquiries', inquiryRoutes);
-
+// Audit API
 app.use('/api/v1/audits', auditRoutes);
 
+// System Plan API
 app.use('/api/v1/system-plans', systemPlanRoutes);
 
+// Insights API
 app.use('/api/v1/insights', insightRoutes);
 
+// Case Studies API
 app.use('/api/v1/case-studies', caseStudyRoutes);
 
+// Health / Telemetry API
 app.use('/api/v1', healthRoutes);
-
 
 // ====================================================
 // API ROOT
 // ====================================================
-
-// ====================================================
-// API ROUTES - DEBUG
-// ====================================================
-
-// ====================================================
-// API ROUTES - DEBUG
-// ====================================================
-
-console.log('========== API ROUTE DEBUG ==========');
-
-console.log('1. inquiryRoutes:', typeof inquiryRoutes);
-app.use('/api/v1/inquiries', inquiryRoutes);
-console.log('1. inquiryRoutes mounted OK');
-
-console.log('2. auditRoutes:', typeof auditRoutes);
-app.use('/api/v1/audits', auditRoutes);
-console.log('2. auditRoutes mounted OK');
-
-console.log('3. systemPlanRoutes:', typeof systemPlanRoutes);
-app.use('/api/v1/system-plans', systemPlanRoutes);
-console.log('3. systemPlanRoutes mounted OK');
-
-console.log('4. insightRoutes:', typeof insightRoutes);
-app.use('/api/v1/insights', insightRoutes);
-console.log('4. insightRoutes mounted OK');
-
-console.log('5. caseStudyRoutes:', typeof caseStudyRoutes);
-app.use('/api/v1/case-studies', caseStudyRoutes);
-console.log('5. caseStudyRoutes mounted OK');
-
-console.log('6. healthRoutes:', typeof healthRoutes);
-app.use('/api/v1', healthRoutes);
-console.log('6. healthRoutes mounted OK');
-
-console.log('====================================');
-
-console.log('====================================');
-
-app.use('/api/v1/inquiries', inquiryRoutes);
-app.use('/api/v1/audits', auditRoutes);
-app.use('/api/v1/system-plans', systemPlanRoutes);
-app.use('/api/v1/insights', insightRoutes);
-app.use('/api/v1/case-studies', caseStudyRoutes);
-app.use('/api/v1', healthRoutes);
-
 
 app.get('/api/v1', (req, res) => {
   res.status(200).json({
@@ -227,13 +129,9 @@ app.get('/api/v1', (req, res) => {
   });
 });
 
-
 // ====================================================
 // API 404
 // ====================================================
-
-// Do NOT use app.use('/api/*', ...) here.
-// Handle unmatched API requests with a normal middleware.
 
 app.use((req, res, next) => {
   if (req.originalUrl.startsWith('/api/')) {
@@ -246,14 +144,14 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // ====================================================
 // ERROR HANDLER
 // ====================================================
 
 app.use(errorHandler);
 
+// ====================================================
+// EXPORT
+// ====================================================
 
-// Export Express application
-// Netlify imports this file.
 export default app;
