@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run build:function",
+"build:function": "node scripts/build-function.js",
     "preview": "vite preview",
     "server": "node server/local.js",
     "seed": "node server/seed/seedData.js",
@@ -27,7 +28,8 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.18.3",
     "serverless-http": "^4.0.0",
-    "tailwind-merge": "^2.6.0"
+    "tailwind-merge": "^2.6.0",
+    "esbuild": "^0.24.2"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",

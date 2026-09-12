@@ -10,7 +10,7 @@ import * as systemPlanRoutesModule from './routes/systemPlanRoutes.js';
 import * as insightRoutesModule from './routes/insightRoutes.js';
 import * as caseStudyRoutesModule from './routes/caseStudyRoutes.js';
 import * as healthRoutesModule from './routes/healthRoutes.js';
-import * as errorHandlerModule from './middleware/errorHandler.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const inquiryRoutes = inquiryRoutesModule.default;
 const auditRoutes = auditRoutesModule.default;
@@ -18,8 +18,6 @@ const systemPlanRoutes = systemPlanRoutesModule.default;
 const insightRoutes = insightRoutesModule.default;
 const caseStudyRoutes = caseStudyRoutesModule.default;
 const healthRoutes = healthRoutesModule.default;
-const errorHandler = errorHandlerModule.default ?? errorHandlerModule.errorHandler;
-
 dotenv.config();
 
 const app = express();
