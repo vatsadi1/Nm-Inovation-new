@@ -6,7 +6,7 @@ import morgan from 'morgan';
 
 import { errorHandler } from './middleware/errorHandler.js';
 import { requestLogger } from './middleware/logger.js';
-import { apiLimiter } from './middleware/rateLimiter.js';
+// import { apiLimiter } from './middleware/rateLimiter.js';
 
 // Route Imports
 import inquiryRoutes from './routes/inquiryRoutes.js';
@@ -85,9 +85,17 @@ app.use(
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 } else {
-  app.use(requestLogger);
-}
+  console.log('========== LOGGER DEBUG ==========');
+  console.log('requestLogger:', requestLogger);
+  console.log('requestLogger type:', typeof requestLogger);
+  console.log('==================================');
 
+  if (typeof requestLogger === 'function') {
+    app.use(requestLogger);
+  } else {
+    console.error('requestLogger is NOT a function');
+  }
+}
 
 
 
@@ -97,7 +105,8 @@ if (process.env.NODE_ENV === 'development') {
 // RATE LIMITING
 // ====================================================
 
-app.use('/api/', apiLimiter);
+// Temporarily disabled for Netlify deployment debugging.
+// app.use('/api/', apiLimiter);
 
 
 // ====================================================
